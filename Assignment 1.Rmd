@@ -1,0 +1,53 @@
+---
+title: "Daily Show"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+library(RCurl)
+library(tidyverse)
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+getfile <- getURL("https://raw.githubusercontent.com/mtelab1/Test/master/daily_show_guests.csv") 
+guests <- read.csv(text = getfile)
+guests <- guests %>% rename(guest_category = Group, guest_name = Raw_Guest_List)
+guests
+
+```
+
+The below data depicts depicts how the catorgy of guests on The Daily Show changed over time.  We can see for example how the frequency of actors decline.
+
+```{r}
+actorsgrouped <- guests %>% 
+    group_by(YEAR,guest_category) %>%
+    summarize(count = n())%>% 
+    filter(guest_category == 'Acting')
+actorsgrouped
+```
+While the frequency of politician guests increased and remianed steady around 2004.
+
+
+```{r}
+journalistgrouped <- guests %>% 
+    group_by(YEAR,guest_category) %>%
+    summarize(count = n())%>% 
+    filter(guest_category == 'Politician')
+journalistgrouped
+```
+```{r}
+```
+The most prononced in the progression of guests coming from the media.
+
+```{r}
+mediagrouped <- guests %>% 
+    group_by(YEAR,guest_category) %>%
+    summarize(count = n())%>% 
+    filter(guest_category == 'Media')
+mediagrouped
+```
+
